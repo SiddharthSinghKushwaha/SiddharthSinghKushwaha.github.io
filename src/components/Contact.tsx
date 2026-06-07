@@ -136,7 +136,7 @@ export const Contact: React.FC = () => {
               I am open to discussions on edge-cloud computing collaborations, guest lectures, curriculum design support, or technical research projects. Drop me a line!
             </p>
 
-            <div className="space-y-4 pt-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4 pt-6">
               
               {/* Mail Box */}
               <GlowCard className="p-4 border border-surfaceLighter flex items-center space-x-4" glowColor="rgba(0, 210, 255, 0.08)">
@@ -183,6 +183,47 @@ export const Contact: React.FC = () => {
                     className="text-sm font-medium text-text-primary hover:text-accent-pink transition-colors"
                   >
                     SiddharthSinghKushwaha
+                  </a>
+                </div>
+              </GlowCard>
+
+              {/* Google Scholar Box */}
+              <GlowCard className="p-4 border border-surfaceLighter flex items-center space-x-4" glowColor="rgba(167, 139, 250, 0.08)">
+                <div className="p-3 bg-accent-purple/10 rounded-lg text-accent-purple flex items-center justify-center">
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M22 10v6M2 10l10-5 10 5-10 5-10 5z"/>
+                    <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/>
+                  </svg>
+                </div>
+                <div>
+                  <h4 className="text-xs font-mono text-text-muted">SCHOLAR</h4>
+                  <a 
+                    href="https://scholar.google.com" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-sm font-medium text-text-primary hover:text-accent-purple transition-colors"
+                  >
+                    Google Scholar Profile
+                  </a>
+                </div>
+              </GlowCard>
+
+              {/* ORCID Box */}
+              <GlowCard className="p-4 border border-surfaceLighter flex items-center space-x-4" glowColor="rgba(0, 210, 255, 0.08)">
+                <div className="p-3 bg-accent-cyan/10 rounded-lg text-accent-cyan flex items-center justify-center">
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zM7.37 18.067H6.155V5.933H7.37v12.134zm-.607-13.31a.762.762 0 0 1-.762-.762c0-.42.342-.762.762-.762.42 0 .762.342.762.762 0 .42-.34.762-.762.762zm10.74 13.31h-1.258V12.78c0-1.636-.575-2.228-1.76-2.228-1.127 0-1.745.748-1.745 2.228v5.287h-1.246V5.933h1.246v4.672c.42-.589 1.135-.867 1.956-.867 2.052 0 2.807 1.488 2.807 3.522v4.807z"/>
+                  </svg>
+                </div>
+                <div>
+                  <h4 className="text-xs font-mono text-text-muted">ORCID</h4>
+                  <a 
+                    href="https://orcid.org" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-sm font-medium text-text-primary hover:text-accent-cyan transition-colors"
+                  >
+                    ORCID Record
                   </a>
                 </div>
               </GlowCard>

@@ -9,10 +9,11 @@ interface NavLink {
 
 const navLinks: NavLink[] = [
   { name: 'Home', href: '#home' },
-  { name: 'About', href: '#about' },
-  { name: 'Skills', href: '#skills' },
-  { name: 'Timeline', href: '#timeline' },
-  { name: 'Projects', href: '#projects' },
+  { name: 'Research', href: '#research' },
+  { name: 'DCC Lab', href: '#dcc-lab' },
+  { name: 'Blog', href: '#blog' },
+  { name: 'Teaching', href: '#teaching' },
+  { name: 'About Me', href: '#about' },
   { name: 'Contact', href: '#contact' },
 ];
 
