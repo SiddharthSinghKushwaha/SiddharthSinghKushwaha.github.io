@@ -1,225 +1,53 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>601 Error - Website Under Progress</title>
-<!-- Google Fonts: JetBrains Mono (Coding) & Poppins (Clean Sans) -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Poppins:wght@300;400;600;700&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
-<!-- Icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<style>
-  /* --- TECH THEME VARIABLES (LIGHT MODE) --- */
-  :root {
-    --bg-page: #ffffff;
-    --bg-terminal: #f6f8fa;     /* GitHub Light Code Background */
-    --border: #d0d7de;          /* Crisp lines */
-    --text-primary: #24292f;    /* Jet Black */
-    --text-secondary: #57606a;  /* Slate Gray */
-    --accent-blue: #0969da;     /* System Link Blue */
-    --accent-orange: #bc4c00;   /* Warning/Error Accent */
-    --radius: 12px;
-    
-    /* IDE Syntax Highlighting */
-    --syntax-kw: #cf222e;       /* Keywords */
-    --syntax-var: #8250df;      /* Variables */
-    --syntax-str: #0a3069;      /* Strings */
-    --syntax-com: #6e7781;      /* Comments */
-  }
+﻿<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/avatar.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  * { box-sizing: border-box; }
+    <!-- Primary SEO Meta Tags -->
+    <title>Siddharth Singh Kushwaha | Ph.D. Scholar & CS Researcher</title>
+    <meta name="title" content="Siddharth Singh Kushwaha | Ph.D. Scholar & CS Researcher" />
+    <meta
+      name="description"
+      content="Portfolio of Siddharth Singh Kushwaha, a Ph.D. Scholar at IISER Berhampur specializing in Edge Computing, Intelligence, and Computer Science."
+    />
+    <meta
+      name="keywords"
+      content="Siddharth Singh Kushwaha, Ph.D. Scholar, IISER Berhampur, Edge Computing, Computer Science, Researcher, Portfolio"
+    />
+    <meta name="author" content="Siddharth Singh Kushwaha" />
 
-  body {
-    background-color: var(--bg-page);
-    color: var(--text-primary);
-    font-family: 'Poppins', sans-serif;
-    margin: 0;
-    padding: 40px 20px;
-    line-height: 1.6;
-    /* Clean Minimalist Grid Pattern */
-    background-image: linear-gradient(var(--bg-terminal) 1px, transparent 1px),
-                      linear-gradient(90deg, var(--bg-terminal) 1px, transparent 1px);
-    background-size: 30px 30px;
-  }
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://siddharthsinghkushwaha.github.io/" />
+    <meta property="og:title" content="Siddharth Singh Kushwaha | Ph.D. Scholar & CS Researcher" />
+    <meta
+      property="og:description"
+      content="Portfolio of Siddharth Singh Kushwaha, a Ph.D. Scholar at IISER Berhampur specializing in Edge Computing, Intelligence, and Computer Science."
+    />
+    <meta property="og:image" content="/avatar.png" />
 
-  .container {
-    max-width: 1100px;
-    margin: 0 auto;
-    width: 100%;
-  }
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://siddharthsinghkushwaha.github.io/" />
+    <meta property="twitter:title" content="Siddharth Singh Kushwaha | Ph.D. Scholar & CS Researcher" />
+    <meta
+      property="twitter:description"
+      content="Portfolio of Siddharth Singh Kushwaha, a Ph.D. Scholar at IISER Berhampur specializing in Edge Computing, Intelligence, and Computer Science."
+    />
+    <meta property="twitter:image" content="/avatar.png" />
 
-  /* --- ERROR BANNER ARCHITECTURE --- */
-  .error-banner {
-    text-align: center;
-    margin-bottom: 50px;
-    padding: 30px 20px;
-    border-bottom: 2px dashed var(--border);
-  }
-
-  .error-banner h1 {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 3rem;
-    margin: 0;
-    color: var(--accent-orange);
-    letter-spacing: -1px;
-    display: inline-flex;
-    align-items: center;
-    gap: 15px;
-  }
-
-  .error-banner p {
-    font-size: 1.2rem;
-    color: var(--text-secondary);
-    margin: 10px 0 0 0;
-    font-weight: 600;
-  }
-
-  /* --- HERO PANEL (Flexbox Grid to prevent overlaps) --- */
-  .hero-panel {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 40px;
-    background: var(--bg-page);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 40px;
-    box-shadow: 0 8px 24px rgba(140, 149, 159, 0.1);
-    align-items: center;
-  }
-
-  .hero-img-container {
-    flex: 0 0 220px;
-    text-align: center;
-  }
-
-  .profile-img {
-    width: 200px;
-    height: 200px;
-    object-fit: cover;
-    border-radius: var(--radius);
-    border: 1px solid var(--border);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  }
-
-  .hero-content {
-    flex: 1;
-    min-width: 320px;
-  }
-
-  /* --- INTERACTIVE IDE WINDOW --- */
-  .ide-window {
-    background: var(--bg-terminal);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 24px;
-    font-family: 'Fira Code', monospace;
-    font-size: 0.95rem;
-    position: relative;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
-    overflow-x: auto;
-  }
-
-  /* Mac-style Window controls */
-  .ide-window::before {
-    content: "● ● ●";
-    color: #c9d1d9;
-    font-size: 0.75rem;
-    letter-spacing: 3px;
-    position: absolute;
-    top: 8px;
-    left: 15px;
-  }
-
-  .ide-content {
-    margin-top: 15px;
-  }
-
-  .line { display: block; margin-bottom: 5px; white-space: pre; }
-  .kw { color: var(--syntax-kw); font-weight: 600; }
-  .var { color: var(--syntax-var); }
-  .str { color: var(--syntax-string); }
-  .com { color: var(--syntax-com); font-style: italic; }
-
-  /* --- FAST INTERACTION LINKS --- */
-  .quick-links {
-    margin-top: 25px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-  }
-
-  .btn {
-    font-family: 'Fira Code', monospace;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--accent-blue);
-    background: var(--bg-page);
-    border: 1px solid var(--border);
-    padding: 8px 16px;
-    border-radius: 6px;
-    text-decoration: none;
-    transition: all 0.2s ease;
-  }
-
-  .btn:hover {
-    background: var(--bg-terminal);
-    border-color: var(--accent-blue);
-    transform: translateY(-1px);
-  }
-
-  /* --- MOBILE OPTIMIZATION --- */
-  @media (max-width: 768px) {
-    body { padding: 20px 10px; }
-    .error-banner h1 { font-size: 2rem; }
-    .hero-panel { flex-direction: column; text-align: center; padding: 25px; }
-    .hero-img-container { width: 100%; }
-    .ide-window { text-align: left; }
-    .quick-links { justify-content: center; }
-  }
-</style>
-</head>
-<body>
-
-<div class="container">
-
-  <!-- MAIN HEADING SECTION -->
-  <div class="error-banner">
-    <h1><i class="fas fa-terminal"></i> 601 Error</h1>
-    <p>This website is under progress</p>
-  </div>
-
-  <!-- HERO PANEL -->
-  <main class="hero-panel">
-    <div class="hero-img-container">
-      <!-- Reference to your profile asset style -->
-      <img src="https://via.placeholder.com/250x250?text=Siddharth+Photo" alt="Siddharth Profile Image" class="profile-img">
-    </div>
-    
-    <div class="hero-content">
-      <div class="ide-window">
-        <div class="ide-content">
-          <span class="line"><span class="kw">import</span> { <span class="var">Researcher</span> } <span class="kw">from</span> <span class="str">'iiser-berhampur'</span>;</span>
-          <span class="line"><span class="com">// Re-compiling system core components...</span></span>
-          <span class="line"><span class="kw">const</span> <span class="var">currentProfile</span> = {</span>
-          <span class="line">  identity: <span class="str">"Siddharth Singh Kushwaha"</span>,</span>
-          <span class="line">  domain: <span class="str">"Edge Computing & Intelligence"</span>,</span>
-          <span class="line">  status: <span class="str">"Compiling_New_Portfolio_Data"</span>,</span>
-          <span class="line">  interruptedBy: <span class="str">"Active PhD Milestones"</span></span>
-          <span class="line">};</span>
-        </div>
-      </div>
-
-      <!-- QUICK FALLBACK NAVIGATION -->
-      <div class="quick-links">
-        <a href="#research" class="btn"><i class="fas fa-microscope"></i> cat track_my_research.md</a>
-        <a href="#teaching" class="btn"><i class="fas fa-code-branch"></i> sh execution_log.sh</a>
-      </div>
-    </div>
-  </main>
-
-</div>
-
-</body>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-background text-text-primary antialiased selection:bg-accent-cyan/30 selection:text-accent-cyan overflow-x-hidden">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>

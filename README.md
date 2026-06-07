@@ -1,4 +1,12 @@
 # SiddharthSinghKushwaha.github.io
 
-Will update website soon.
-Domain from Namecheap (for 1 year). 
+Portfolio site for Siddharth Singh Kushwaha, built with React, TypeScript, and Vite.
+
+## Development
+
+- `npm install`
+- `npm run dev`
+
+## Build
+
+- `npm run build`
