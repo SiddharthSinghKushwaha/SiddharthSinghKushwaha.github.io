@@ -12,10 +12,10 @@ export const Footer: React.FC = () => {
             <span className="bg-gradient-to-r from-accent-cyan to-accent-violet bg-clip-text text-transparent">Sid.</span>
           </div>
           <p className="text-xs text-text-muted mt-1.5 font-mono">
-            Ph.D. Scholar advised by Dr. Chinmaya Kumar Dehury
+            Ph.D. Scholar advised by <a href="https://dcc.chinmayadehury.in/" target="_blank" rel="noopener noreferrer" className="hover:text-accent-cyan transition-colors font-semibold">Dr. Chinmaya Kumar Dehury</a>
           </p>
           <p className="text-[10px] text-text-muted mt-0.5 font-mono">
-            Distributed Cloud & Cognitive Lab (DCC Lab), IISER Berhampur
+            Distributed Computing Continuum Lab (DCC Lab), IISER Berhampur
           </p>
         </div>
 

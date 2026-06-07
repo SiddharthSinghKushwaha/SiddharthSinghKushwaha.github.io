@@ -129,7 +129,7 @@ export const Hero: React.FC = () => {
                 role: <span className="code-str">"Ph.D. Scholar"</span>,
               </div>
               <div className="pl-4">
-                lab: <span className="code-str">"Distributed Cloud & Cognitive Lab (DCC Lab)"</span>,
+                lab: <span className="code-str">"Distributed Computing Continuum Lab (DCC Lab)"</span>,
               </div>
               <div className="pl-4">
                 domain: [<span className="code-str">"Edge Computing"</span>, <span className="code-str">"Cloud Intelligence"</span>],

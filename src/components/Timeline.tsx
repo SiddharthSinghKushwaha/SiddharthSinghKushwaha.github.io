@@ -22,7 +22,7 @@ export const Timeline: React.FC = () => {
       color: "from-accent-cyan to-accent-violet",
       desc: [
         "Pursuing doctoral research in Computer Science under the guidance of Dr. Chinmaya Kumar Dehury.",
-        "Member of the Distributed Cloud & Cognitive Lab (DCC Lab).",
+        "Member of the Distributed Computing Continuum Lab (DCC Lab).",
         "Focused on Edge Computing optimizations, Distributed Inference, and Localized Intelligence."
       ]
     },

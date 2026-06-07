@@ -86,11 +86,11 @@ export const About: React.FC = () => {
                 Ph.D. Scholar | IISER Berhampur
               </p>
               <p className="text-text-secondary leading-relaxed mb-4 max-w-md">
-                Currently pursuing doctoral research under the guidance of <strong>Dr. Chinmaya Kumar Dehury</strong>. 
+                Currently pursuing doctoral research under the guidance of <a href="https://dcc.chinmayadehury.in/" target="_blank" rel="noopener noreferrer" className="text-accent-cyan hover:underline font-semibold">Dr. Chinmaya Kumar Dehury</a>. 
                 My academic path has driven me to explore the frontiers of edge computing, where computational power meets localized intelligence.
               </p>
               <div className="p-4 rounded-lg bg-surface/40 border border-surfaceLighter font-mono text-xs text-text-secondary">
-                <span className="text-accent-violet font-semibold">Advisor:</span> Dr. Chinmaya Kumar Dehury <br/>
+                <span className="text-accent-violet font-semibold">Advisor:</span> <a href="https://dcc.chinmayadehury.in/" target="_blank" rel="noopener noreferrer" className="text-text-primary hover:text-accent-cyan transition-colors">Dr. Chinmaya Kumar Dehury</a> <br/>
                 <span className="text-accent-cyan font-semibold">Location:</span> IISER Berhampur, Odisha, India
               </div>
             </motion.div>
