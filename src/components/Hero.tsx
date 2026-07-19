@@ -2,24 +2,21 @@ import React, { useEffect, useRef, useState } from 'react';
 import type { MouseEvent as ReactMouseEvent } from 'react';
 import { motion } from 'framer-motion';
 
-interface Particle {
+interface StarParticle {
   x: number;
   y: number;
-  vx: number;
-  vy: number;
+  z: number;
   text: string;
-  size: number;
-  baseAlpha: number;
-  alpha: number;
-  targetSlot: number | null; // index of slot if attracted
+  color: string;
 }
 
 export const Hero: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [mousePos, setMousePos] = useState<{ x: number; y: number } | null>(null);
+  const [focalLength, setFocalLength] = useState<number>(300);
+  const [warpCenter, setWarpCenter] = useState<{ x: number; y: number } | null>(null);
 
-  // Quick Links SVGs
+  // Icons
   const scholarIcon = (
     <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
@@ -62,106 +59,85 @@ export const Hero: React.FC = () => {
     if (!ctx) return;
 
     let animationFrameId: number;
-    let particles: Particle[] = [];
-    const particleCount = 80;
+    let stars: StarParticle[] = [];
+    const numStars = 450; // Performance friendly density
 
     const resizeCanvas = () => {
       canvas.width = canvas.offsetWidth;
       canvas.height = canvas.offsetHeight;
+      initializeStars();
     };
+
+    const initializeStars = () => {
+      stars = [];
+      for (let i = 0; i < numStars; i++) {
+        stars.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          z: Math.random() * canvas.width,
+          text: Math.random() > 0.5 ? "1" : "0",
+          color: Math.random() > 0.5 ? "rgba(0, 210, 255, " : "rgba(139, 92, 246, "
+        });
+      }
+    };
+
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // Initialize particles
-    for (let i = 0; i < particleCount; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.4,
-        vy: (Math.random() - 0.5) * 0.4,
-        text: Math.random() > 0.5 ? "1" : "0",
-        size: Math.random() * 6 + 10,
-        baseAlpha: Math.random() * 0.25 + 0.1,
-        alpha: 0,
-        targetSlot: null,
-      });
-    }
+    // Target center coordinates for smoothing
+    let targetCenterX = canvas.width / 2;
+    let targetCenterY = canvas.height / 2;
+    let currentCenterX = canvas.width / 2;
+    let currentCenterY = canvas.height / 2;
 
     const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.font = 'bold 12px "JetBrains Mono", monospace';
+      // Clear with deep transparent obsidian background to allow radial glows to pass through
+      ctx.fillStyle = "rgba(11, 15, 25, 0.25)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // If mouse is active, sort particles by distance to find the closest 4 to form "1010"
-      let closestIndices: number[] = [];
-      if (mousePos) {
-        const distances = particles.map((p, idx) => {
-          const dx = p.x - mousePos.x;
-          const dy = p.y - mousePos.y;
-          return { idx, dist: Math.sqrt(dx * dx + dy * dy) };
-        });
-        distances.sort((a, b) => a.dist - b.dist);
-        closestIndices = distances.slice(0, 4).map(d => d.idx);
+      if (warpCenter) {
+        targetCenterX = warpCenter.x;
+        targetCenterY = warpCenter.y;
+      } else {
+        targetCenterX = canvas.width / 2;
+        targetCenterY = canvas.height / 2;
       }
 
-      // Slot target offsets from mouse position: forming "1010" horizontally below the cursor
-      // Slots layout: [1] [0] [1] [0]
-      const slotOffsets = [
-        { dx: -27, dy: 22, char: "1" },
-        { dx: -9, dy: 22, char: "0" },
-        { dx: 9, dy: 22, char: "1" },
-        { dx: 27, dy: 22, char: "0" }
-      ];
+      // Smooth center shifting
+      currentCenterX += (targetCenterX - currentCenterX) * 0.08;
+      currentCenterY += (targetCenterY - currentCenterY) * 0.08;
 
-      particles.forEach((p, idx) => {
-        // Reset slot reference
-        p.targetSlot = null;
+      for (let i = 0; i < numStars; i++) {
+        const star = stars[i];
 
-        if (mousePos) {
-          const slotIdx = closestIndices.indexOf(idx);
-          if (slotIdx !== -1) {
-            p.targetSlot = slotIdx;
-          }
+        // Move stars closer to screen (medium speed)
+        star.z -= 1.8;
+
+        // Reset if passed the screen boundary
+        if (star.z <= 0) {
+          star.z = canvas.width;
+          star.x = Math.random() * canvas.width;
+          star.y = Math.random() * canvas.height;
+          star.text = Math.random() > 0.5 ? "1" : "0";
         }
 
-        // Behavior based on slot assignment
-        if (p.targetSlot !== null && mousePos) {
-          const target = slotOffsets[p.targetSlot];
-          const targetX = mousePos.x + target.dx;
-          const targetY = mousePos.y + target.dy;
+        // Calculate 3D perspective projection
+        const k = focalLength / star.z;
+        const px = (star.x - currentCenterX) * k + currentCenterX;
+        const py = (star.y - currentCenterY) * k + currentCenterY;
 
-          // Slide quickly toward the mouse slot (spring interpolation)
-          p.x += (targetX - p.x) * 0.18;
-          p.y += (targetY - p.y) * 0.18;
-          
-          // Override text to form "1010" sequence
-          p.text = target.char;
-          // Glow and make it highly visible
-          p.alpha += (0.9 - p.alpha) * 0.15;
-        } else {
-          // Normal physics (random drift)
-          p.x += p.vx;
-          p.y += p.vy;
+        // Only draw if within viewport boundaries
+        if (px >= 0 && px <= canvas.width && py >= 0 && py <= canvas.height) {
+          // Font size scales with distance
+          const size = Math.max(3, Math.min(22, 2.2 * k));
+          // Alpha increases as it gets closer
+          const alpha = Math.min(0.7, (1 - star.z / canvas.width));
 
-          // Reset text to random binary state if it was modified
-          if (p.text !== "0" && p.text !== "1") {
-            p.text = Math.random() > 0.5 ? "1" : "0";
-          }
-
-          // Ease alpha back to base opacity
-          p.alpha += (p.baseAlpha - p.alpha) * 0.1;
-
-          // Boundary bounce
-          if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-          if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+          ctx.font = `bold ${size}px "JetBrains Mono", monospace`;
+          ctx.fillStyle = `${star.color}${alpha})`;
+          ctx.fillText(star.text, px, py);
         }
-
-        // Draw particle
-        ctx.fillStyle = p.targetSlot !== null 
-          ? `rgba(0, 210, 255, ${p.alpha})` // Cyan glow for clustered cursor numbers
-          : `rgba(139, 92, 246, ${p.alpha})`; // Purple drift color
-        
-        ctx.fillText(p.text, p.x, p.y);
-      });
+      }
 
       animationFrameId = requestAnimationFrame(animate);
     };
@@ -172,20 +148,25 @@ export const Hero: React.FC = () => {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', resizeCanvas);
     };
-  }, [mousePos]);
+  }, [focalLength, warpCenter]);
 
-  // Track Mouse Movements in the Hero Container
   const handleMouseMove = (e: ReactMouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
-    setMousePos({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    });
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+
+    // e.x sets focalLength (capped safely between 150 and 600)
+    const rawFocal = Math.max(150, Math.min(600, mouseX));
+    setFocalLength(rawFocal);
+
+    // Shift center of starfield warp dynamically
+    setWarpCenter({ x: mouseX, y: mouseY });
   };
 
   const handleMouseLeave = () => {
-    setMousePos(null);
+    setWarpCenter(null);
+    setFocalLength(300);
   };
 
   return (
@@ -196,15 +177,15 @@ export const Hero: React.FC = () => {
       onMouseLeave={handleMouseLeave}
       className="relative min-h-screen flex items-center pt-28 pb-16 overflow-hidden bg-background"
     >
-      {/* Interactive canvas background */}
+      {/* 3D binary starfield canvas background */}
       <canvas 
         ref={canvasRef} 
         className="absolute top-0 left-0 w-full h-full pointer-events-none z-0"
       />
 
-      {/* Static gradient glow blob */}
-      <div className="absolute top-1/4 left-10 w-[350px] h-[350px] rounded-full bg-accent-cyan/5 blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-1/4 right-10 w-[400px] h-[400px] rounded-full bg-accent-violet/5 blur-[120px] pointer-events-none" />
+      {/* Static gradient glow blobs behind elements */}
+      <div className="glow-blob bg-accent-cyan/10 top-1/4 left-10 w-[350px] h-[350px]" />
+      <div className="glow-blob bg-accent-violet/10 bottom-1/4 right-10 w-[400px] h-[400px]" />
 
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10 w-full">
         
@@ -216,7 +197,6 @@ export const Hero: React.FC = () => {
             transition={{ duration: 0.6 }}
             className="relative group mb-6"
           >
-            {/* Cyan/Violet border glow */}
             <div className="absolute -inset-0.5 rounded-2xl bg-gradient-to-r from-accent-cyan to-accent-violet opacity-50 blur-sm group-hover:opacity-80 transition duration-500" />
             <img
               src="./avatar.png"
@@ -244,7 +224,7 @@ export const Hero: React.FC = () => {
             {/* Quick Links Social Grid */}
             <div className="flex space-x-3.5 mt-2">
               <a
-                href="https://scholar.google.com" // Google Scholar
+                href="https://scholar.google.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-2.5 rounded-lg bg-surface border border-surfaceLighter text-text-secondary hover:text-accent-cyan hover:border-accent-cyan/40 transition-all duration-300"
@@ -271,7 +251,7 @@ export const Hero: React.FC = () => {
                 {linkedinIcon}
               </a>
               <a
-                href="https://orcid.org" // ORCID
+                href="https://orcid.org"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-2.5 rounded-lg bg-surface border border-surfaceLighter text-text-secondary hover:text-accent-cyan hover:border-accent-cyan/40 transition-all duration-300"
@@ -329,7 +309,7 @@ export const Hero: React.FC = () => {
               <ul className="space-y-1.5 text-sm text-text-secondary">
                 <li className="flex items-center space-x-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-accent-cyan" />
-                  <span>Edge Computing & virtualization</span>
+                  <span>Edge Computing & Virtualization</span>
                 </li>
                 <li className="flex items-center space-x-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-accent-cyan" />
@@ -337,7 +317,7 @@ export const Hero: React.FC = () => {
                 </li>
                 <li className="flex items-center space-x-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-accent-cyan" />
-                  <span>Resource-constrained scheduling</span>
+                  <span>Resource-constrained Scheduling</span>
                 </li>
               </ul>
             </div>
@@ -365,7 +345,7 @@ export const Hero: React.FC = () => {
               <span className="text-xs font-mono font-bold uppercase tracking-wider text-accent-cyan">Recent Update</span>
             </div>
             <p className="text-xs sm:text-sm text-text-secondary text-left flex-1 pl-0 sm:pl-4">
-              Presented conference paper under mentorship of Dr. Ajay Indian (Published June 2025).
+              Attended Summer School on Edge AI and Robotics at IISc Bengaluru (July 2026).
             </p>
           </motion.div>
 

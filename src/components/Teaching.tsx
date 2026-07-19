@@ -55,7 +55,7 @@ export const Teaching: React.FC = () => {
           <div className="lg:col-span-7 space-y-6">
             
             {/* Guest Faculty Card */}
-            <GlowCard className="p-6 border border-surfaceLighter h-full flex flex-col justify-between" glowColor="rgba(0, 210, 255, 0.08)">
+            <GlowCard className="p-6 border border-surfaceLighter flex flex-col justify-between" glowColor="rgba(0, 210, 255, 0.08)">
               <div>
                 <div className="flex items-start justify-between mb-4">
                   <div>

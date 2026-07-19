@@ -27,11 +27,17 @@ const App: React.FC = () => {
       {/* Sections */}
       <main>
         <Hero />
+        <div className="max-w-7xl mx-auto px-6"><hr className="border-surfaceLighter/30 opacity-40" /></div>
         <Research />
+        <div className="max-w-7xl mx-auto px-6"><hr className="border-surfaceLighter/30 opacity-40" /></div>
         <DCCLab />
+        <div className="max-w-7xl mx-auto px-6"><hr className="border-surfaceLighter/30 opacity-40" /></div>
         <Blog />
+        <div className="max-w-7xl mx-auto px-6"><hr className="border-surfaceLighter/30 opacity-40" /></div>
         <Teaching />
+        <div className="max-w-7xl mx-auto px-6"><hr className="border-surfaceLighter/30 opacity-40" /></div>
         <About />
+        <div className="max-w-7xl mx-auto px-6"><hr className="border-surfaceLighter/30 opacity-40" /></div>
         <Contact />
       </main>
 

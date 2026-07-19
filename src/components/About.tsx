@@ -12,6 +12,12 @@ export const About: React.FC = () => {
       desc: "Received the post-graduation gold medal for top academic performance at the Central University of Rajasthan, presented by Prof. T.G. Sitharam (Chairman of AICTE) on 1st May, 2025."
     },
     {
+      icon: <GraduationCap className="text-accent-pink" size={20} />,
+      title: "IISc Edge AI Summer School",
+      subtitle: "IISc Bengaluru • July 2026",
+      desc: "Attended the Summer School on Edge AI and Robotics. Completed hands-on training in Digital Twins, TinyML, SLMs, Federated Learning, Mobile Robotics (ROS/Gazebo), and Multi-Agent Systems on Raspberry Pi 5 and Arduino Nicla platforms."
+    },
+    {
       icon: <HeartHandshake className="text-accent-violet" size={20} />,
       title: "Academic Volunteering",
       subtitle: "AI Pre-Submit 2026 & INVENIO 2025",
@@ -93,7 +99,11 @@ export const About: React.FC = () => {
 
             <div className="space-y-6">
               {achievements.map((item, idx) => (
-                <GlowCard key={idx} className="p-5 border border-surfaceLighter" glowColor={idx === 0 ? "rgba(0, 210, 255, 0.08)" : "rgba(139, 92, 246, 0.08)"}>
+                <GlowCard 
+                  key={idx} 
+                  className="p-5 border border-surfaceLighter" 
+                  glowColor={idx === 0 ? "rgba(0, 210, 255, 0.08)" : idx === 1 ? "rgba(244, 63, 94, 0.08)" : "rgba(139, 92, 246, 0.08)"}
+                >
                   <div className="flex items-start space-x-4">
                     <div className="p-2 bg-surfaceLighter rounded-lg text-text-secondary mt-0.5">
                       {item.icon}

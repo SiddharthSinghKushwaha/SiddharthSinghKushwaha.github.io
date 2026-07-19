@@ -1,14 +1,14 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { GlowCard } from './GlowCard';
-import { BookOpen, ExternalLink, Code, Layers, Compass, BarChart } from 'lucide-react';
+import { BookOpen, ExternalLink, Code, Layers, Compass, BarChart, Activity, Cpu } from 'lucide-react';
 
 interface Publication {
   title: string;
   authors: string;
   venue: string;
   date: string;
-  mentor: string;
+  mentor?: string;
   links: {
     paper?: string;
     code?: string;
@@ -21,6 +21,14 @@ interface ResearchProject {
   status: string;
   goal: string;
   progress: string;
+}
+
+interface ResearchProgressItem {
+  title: string;
+  objective: string;
+  workCompleted: string;
+  status: string;
+  glowColor: string;
 }
 
 export const Research: React.FC = () => {
@@ -39,7 +47,41 @@ export const Research: React.FC = () => {
     }
   ];
 
+  const researchProgress: ResearchProgressItem[] = [
+    {
+      title: "LLM-assisted Edge Intelligence (LEI)",
+      objective: "Develop a framework that automatically generates lightweight edge programs using Large Language Models (LLMs), reducing the need for manually writing and updating code.",
+      workCompleted: "Designed the LEI framework; used cloud-running LLM to generate Python programs for edge devices based on data, metadata, context, and resources; validated generated programs; evaluated on 4 public IoT datasets; compared with LangGraph and AutoGen.",
+      status: "Revision 1 Under Review",
+      glowColor: "rgba(0, 210, 255, 0.08)"
+    },
+    {
+      title: "Edge Intelligence Operations (EIOps)",
+      objective: "Automatically manage the generation, deployment, and execution of edge intelligence on multiple Raspberry Pi devices.",
+      workCompleted: "Designed EIOps framework; automated deployment across edge devices; evaluated parallel execution; measured CPU, memory, and execution performance; demonstrated efficient resource utilization.",
+      status: "Submitted to IEEE MASS 2026",
+      glowColor: "rgba(139, 92, 246, 0.08)"
+    },
+    {
+      title: "Clustered Edge Intelligence (CEI)",
+      objective: "Enable multiple edge intelligence modules to collaborate and solve complex tasks.",
+      workCompleted: "Designed CEI framework; introduced task relevance and semantic relationship scores to group modules; developed collaborative decision mechanism; implemented Docker prototype; demonstrated reusable/shareable intelligence.",
+      status: "Submitted to IEEE BDA 2026",
+      glowColor: "rgba(244, 63, 94, 0.08)"
+    }
+  ];
+
   const publications: Publication[] = [
+    {
+      title: "LLM-assisted Agentic Edge Intelligence Framework",
+      authors: "Siddharth Singh Kushwaha, Chinmaya Kumar Dehury",
+      venue: "arXiv Preprint",
+      date: "April 2026",
+      mentor: "Dr. Chinmaya Kumar Dehury",
+      links: {
+        paper: "https://arxiv.org/abs/2604.09607"
+      }
+    },
     {
       title: "Resource-Optimized Task Allocation in Distributed Edge Networks",
       authors: "Siddharth Singh Kushwaha, Ajay Indian",
@@ -132,7 +174,41 @@ export const Research: React.FC = () => {
           </div>
         </div>
 
-        {/* Section 3: Publications */}
+        {/* Section 3: Research Progress & Frameworks */}
+        <div className="mb-20">
+          <h3 className="text-xl font-heading font-bold text-text-primary mb-6 flex items-center space-x-2.5">
+            <Activity size={20} className="text-accent-cyan" />
+            <span>Research Progress & Frameworks</span>
+          </h3>
+          <div className="grid grid-cols-1 gap-6">
+            {researchProgress.map((item, idx) => (
+              <GlowCard key={idx} className="p-6 border border-surfaceLighter" glowColor={item.glowColor}>
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                  <div className="flex items-center space-x-3">
+                    <Cpu size={18} className="text-accent-cyan" />
+                    <h4 className="font-heading font-bold text-text-primary text-base sm:text-lg">{item.title}</h4>
+                  </div>
+                  <span className="text-xs font-mono font-bold tracking-wider px-3 py-1 rounded-full bg-surfaceLighter text-accent-cyan border border-surfaceLighter/50 self-start sm:self-auto">
+                    {item.status}
+                  </span>
+                </div>
+                
+                <div className="space-y-3 text-sm text-text-secondary">
+                  <p>
+                    <strong className="text-text-primary font-mono text-xs uppercase tracking-wider block mb-1">Objective:</strong>
+                    {item.objective}
+                  </p>
+                  <p className="leading-relaxed">
+                    <strong className="text-text-primary font-mono text-xs uppercase tracking-wider block mb-1">Work Completed:</strong>
+                    {item.workCompleted}
+                  </p>
+                </div>
+              </GlowCard>
+            ))}
+          </div>
+        </div>
+
+        {/* Section 4: Publications */}
         <div>
           <h3 className="text-xl font-heading font-bold text-text-primary mb-6 flex items-center space-x-2.5">
             <BookOpen size={20} className="text-accent-pink" />
@@ -145,7 +221,7 @@ export const Research: React.FC = () => {
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                   <div className="space-y-1">
                     <span className="text-[10px] font-mono text-accent-cyan border border-accent-cyan/20 bg-accent-cyan/5 px-2 py-0.5 rounded">
-                      Conference Paper
+                      {pub.venue.includes('arXiv') ? 'Preprint' : 'Conference Paper'}
                     </span>
                     <h4 className="text-lg font-heading font-bold text-text-primary pt-1.5">
                       {pub.title}
@@ -158,7 +234,7 @@ export const Research: React.FC = () => {
                     </p>
                     {pub.mentor && (
                       <p className="text-[11px] text-text-muted font-mono">
-                        Mentor: {pub.mentor}
+                        Advisor/Mentor: {pub.mentor}
                       </p>
                     )}
                   </div>
