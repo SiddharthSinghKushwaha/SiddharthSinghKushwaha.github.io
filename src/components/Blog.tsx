@@ -40,8 +40,22 @@ export const Blog: React.FC = () => {
     }
   ];
 
+  // Repeat the list to allow infinite marquee scrolling
+  const repeatedPosts = [...posts, ...posts, ...posts, ...posts];
+
   return (
     <section id="blog" className="py-24 relative overflow-hidden bg-background">
+      {/* Inline styles for the infinite horizontal marquee */}
+      <style dangerouslySetInnerHTML={{__html: `
+        @keyframes marquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+          animation: marquee 25s linear infinite;
+        }
+      `}} />
+
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         
         {/* Section Header */}
@@ -73,74 +87,77 @@ export const Blog: React.FC = () => {
           />
         </div>
 
-        {/* Blog Post List */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {posts.map((post, idx) => (
-            <motion.div
-              key={post.slug}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: idx * 0.1 }}
-            >
-              <GlowCard 
-                className="p-6 border border-surfaceLighter h-full flex flex-col justify-between"
-                glowColor={
-                  post.category === 'Research Notes' 
-                    ? 'rgba(0, 210, 255, 0.08)' 
-                    : post.category === 'Paper Summaries'
-                    ? 'rgba(139, 92, 246, 0.08)'
-                    : 'rgba(244, 63, 94, 0.08)'
-                }
-              >
-                <div>
-                  {/* Category Header */}
-                  <div className="flex justify-between items-center mb-4">
-                    <span className={`text-[9px] font-mono font-bold tracking-wider uppercase px-2.5 py-1 rounded bg-surfaceLighter border ${
-                      post.category === 'Research Notes' 
-                        ? 'border-accent-cyan/30 text-accent-cyan' 
-                        : post.category === 'Paper Summaries' 
-                        ? 'border-accent-violet/30 text-accent-violet' 
-                        : 'border-accent-pink/30 text-accent-pink'
-                    }`}>
-                      {post.category}
-                    </span>
+        {/* Marquee Card Slider */}
+        <div className="relative w-full overflow-hidden py-4">
+          {/* Subtle horizontal gradient overlays for faded edges */}
+          <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-28 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-28 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+
+          {/* Marquee moving container */}
+          <div className="flex animate-marquee hover:[animation-play-state:paused] space-x-6 w-max cursor-pointer">
+            {repeatedPosts.map((post, idx) => (
+              <div key={idx} className="w-[300px] sm:w-[360px] flex-shrink-0">
+                <GlowCard 
+                  className="p-6 border border-surfaceLighter h-[260px] flex flex-col justify-between"
+                  glowColor={
+                    post.category === 'Research Notes' 
+                      ? 'rgba(0, 210, 255, 0.08)' 
+                      : post.category === 'Paper Summaries'
+                      ? 'rgba(139, 92, 246, 0.08)'
+                      : 'rgba(244, 63, 94, 0.08)'
+                  }
+                >
+                  <div>
+                    {/* Category */}
+                    <div className="flex justify-between items-center mb-3">
+                      <span className={`text-[9px] font-mono font-bold tracking-wider uppercase px-2 py-0.5 rounded bg-surfaceLighter border ${
+                        post.category === 'Research Notes' 
+                          ? 'border-accent-cyan/30 text-accent-cyan' 
+                          : post.category === 'Paper Summaries' 
+                          ? 'border-accent-violet/30 text-accent-violet' 
+                          : 'border-accent-pink/30 text-accent-pink'
+                      }`}>
+                        {post.category}
+                      </span>
+                    </div>
+
+                    {/* Title */}
+                    <h3 className="text-sm sm:text-base font-heading font-bold text-text-primary mb-2 line-clamp-2 hover:text-accent-cyan transition-colors">
+                      {post.title}
+                    </h3>
+
+                    {/* Metadata */}
+                    <div className="flex items-center space-x-3 text-[10px] text-text-muted font-mono mb-3">
+                      <div className="flex items-center space-x-1">
+                        <Calendar size={10} />
+                        <span>{post.date}</span>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <Clock size={10} />
+                        <span>{post.readTime}</span>
+                      </div>
+                    </div>
+
+                    {/* Summary */}
+                    <p className="text-xs text-text-secondary leading-relaxed line-clamp-3">
+                      {post.summary}
+                    </p>
                   </div>
 
-                  {/* Title & Metadata */}
-                  <h3 className="text-base sm:text-lg font-heading font-bold text-text-primary mb-3 hover:text-accent-cyan transition-colors line-clamp-2">
-                    {post.title}
-                  </h3>
-
-                  <div className="flex items-center space-x-3 text-xs text-text-muted font-mono mb-4">
-                    <div className="flex items-center space-x-1">
-                      <Calendar size={12} />
-                      <span>{post.date}</span>
-                    </div>
-                    <div className="flex items-center space-x-1">
-                      <Clock size={12} />
-                      <span>{post.readTime}</span>
-                    </div>
+                  {/* Read Link */}
+                  <div className="border-t border-surfaceLighter/40 pt-3 flex items-center">
+                    <a 
+                      href={`https://github.com/SiddharthSinghKushwaha`}
+                      className="inline-flex items-center space-x-1 text-[10px] font-mono text-accent-cyan hover:underline"
+                    >
+                      <Terminal size={10} />
+                      <span>cat read_post.sh</span>
+                    </a>
                   </div>
-
-                  <p className="text-xs sm:text-sm text-text-secondary leading-relaxed mb-6">
-                    {post.summary}
-                  </p>
-                </div>
-
-                {/* Read Action Button */}
-                <div className="border-t border-surfaceLighter/50 pt-4">
-                  <a 
-                    href={`https://github.com/SiddharthSinghKushwaha`}
-                    className="inline-flex items-center space-x-1 text-xs font-mono text-accent-cyan hover:underline"
-                  >
-                    <Terminal size={12} />
-                    <span>cat read_post.sh</span>
-                  </a>
-                </div>
-              </GlowCard>
-            </motion.div>
-          ))}
+                </GlowCard>
+              </div>
+            ))}
+          </div>
         </div>
 
       </div>

@@ -1,98 +1,28 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { GlowCard } from './GlowCard';
-import { BookOpen, ExternalLink, Code, Layers, Compass, BarChart, Activity, Cpu } from 'lucide-react';
-
-interface Publication {
-  title: string;
-  authors: string;
-  venue: string;
-  date: string;
-  mentor?: string;
-  links: {
-    paper?: string;
-    code?: string;
-    slides?: string;
-  };
-}
-
-interface ResearchProject {
-  title: string;
-  status: string;
-  goal: string;
-  progress: string;
-}
+import { BookOpen, ExternalLink, Compass, Activity } from 'lucide-react';
 
 interface ResearchProgressItem {
   title: string;
-  objective: string;
-  workCompleted: string;
   status: string;
-  glowColor: string;
+  link?: string;
 }
 
 export const Research: React.FC = () => {
-  const projects: ResearchProject[] = [
-    {
-      title: "Edge Heuristic Scheduling Solver (EHSS)",
-      status: "Active",
-      goal: "Design lightweight scheduling algorithms that dynamically distribute containerized model inference workloads based on CPU/GPU thermal limits and local network bandwidth.",
-      progress: "Developed initial heuristic models in Python. Testing simulator on cluster of Single Board Computers (SBCs)."
-    },
-    {
-      title: "Container Footprint Profiler (CFP)",
-      status: "Active",
-      goal: "Measure memory and CPU scheduling latency overhead of Docker and Podman microservices on micro-controller class architectures during data burst events.",
-      progress: "Aggregated performance data for microservice deployments. Pre-drafting experimental evaluations for next conference track."
-    }
-  ];
-
   const researchProgress: ResearchProgressItem[] = [
     {
       title: "LLM-assisted Edge Intelligence (LEI)",
-      objective: "Develop a framework that automatically generates lightweight edge programs using Large Language Models (LLMs), reducing the need for manually writing and updating code.",
-      workCompleted: "Designed the LEI framework; used cloud-running LLM to generate Python programs for edge devices based on data, metadata, context, and resources; validated generated programs; evaluated on 4 public IoT datasets; compared with LangGraph and AutoGen.",
       status: "Revision 1 Under Review",
-      glowColor: "rgba(0, 210, 255, 0.08)"
+      link: "https://arxiv.org/abs/2604.09607"
     },
     {
       title: "Edge Intelligence Operations (EIOps)",
-      objective: "Automatically manage the generation, deployment, and execution of edge intelligence on multiple Raspberry Pi devices.",
-      workCompleted: "Designed EIOps framework; automated deployment across edge devices; evaluated parallel execution; measured CPU, memory, and execution performance; demonstrated efficient resource utilization.",
-      status: "Submitted to IEEE MASS 2026",
-      glowColor: "rgba(139, 92, 246, 0.08)"
+      status: "Submitted to IEEE MASS 2026"
     },
     {
       title: "Clustered Edge Intelligence (CEI)",
-      objective: "Enable multiple edge intelligence modules to collaborate and solve complex tasks.",
-      workCompleted: "Designed CEI framework; introduced task relevance and semantic relationship scores to group modules; developed collaborative decision mechanism; implemented Docker prototype; demonstrated reusable/shareable intelligence.",
-      status: "Submitted to IEEE BDA 2026",
-      glowColor: "rgba(244, 63, 94, 0.08)"
-    }
-  ];
-
-  const publications: Publication[] = [
-    {
-      title: "LLM-assisted Agentic Edge Intelligence Framework",
-      authors: "Siddharth Singh Kushwaha, Chinmaya Kumar Dehury",
-      venue: "arXiv Preprint",
-      date: "April 2026",
-      mentor: "Dr. Chinmaya Kumar Dehury",
-      links: {
-        paper: "https://arxiv.org/abs/2604.09607"
-      }
-    },
-    {
-      title: "Resource-Optimized Task Allocation in Distributed Edge Networks",
-      authors: "Siddharth Singh Kushwaha, Ajay Indian",
-      venue: "International Conference on Advanced Computing & Intelligent Systems",
-      date: "Published: June 2025 (Presented: 19 December 2024)",
-      mentor: "Dr. Ajay Indian",
-      links: {
-        paper: "https://github.com/SiddharthSinghKushwaha",
-        code: "https://github.com/SiddharthSinghKushwaha",
-        slides: "https://github.com/SiddharthSinghKushwaha"
-      }
+      status: "Submitted to IEEE BDA 2026"
     }
   ];
 
@@ -148,140 +78,109 @@ export const Research: React.FC = () => {
           </div>
         </div>
 
-        {/* Section 2: Current Projects */}
-        <div className="mb-20">
-          <h3 className="text-xl font-heading font-bold text-text-primary mb-6 flex items-center space-x-2.5">
-            <Layers size={20} className="text-accent-violet" />
-            <span>Active Research Projects</span>
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {projects.map((project, idx) => (
-              <GlowCard key={idx} className="p-6 border border-surfaceLighter" glowColor="rgba(139, 92, 246, 0.08)">
-                <div className="flex justify-between items-center mb-3">
-                  <h4 className="font-heading font-bold text-text-primary">{project.title}</h4>
-                  <span className="text-[10px] font-mono font-bold tracking-wider uppercase px-2 py-0.5 rounded bg-accent-cyan/10 text-accent-cyan border border-accent-cyan/20">
-                    {project.status}
-                  </span>
-                </div>
-                <p className="text-sm text-text-secondary leading-relaxed mb-4">
-                  <strong>Objective:</strong> {project.goal}
-                </p>
-                <div className="p-3 bg-background/50 rounded-lg border border-surfaceLighter/40 text-xs text-text-secondary font-mono">
-                  <span className="text-accent-violet font-semibold">Progress:</span> {project.progress}
-                </div>
-              </GlowCard>
-            ))}
-          </div>
-        </div>
-
-        {/* Section 3: Research Progress & Frameworks */}
+        {/* Section 2: Research Progress (Table Layout) */}
         <div className="mb-20">
           <h3 className="text-xl font-heading font-bold text-text-primary mb-6 flex items-center space-x-2.5">
             <Activity size={20} className="text-accent-cyan" />
-            <span>Research Progress & Frameworks</span>
+            <span>Research Progress</span>
           </h3>
-          <div className="grid grid-cols-1 gap-6">
-            {researchProgress.map((item, idx) => (
-              <GlowCard key={idx} className="p-6 border border-surfaceLighter" glowColor={item.glowColor}>
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-                  <div className="flex items-center space-x-3">
-                    <Cpu size={18} className="text-accent-cyan" />
-                    <h4 className="font-heading font-bold text-text-primary text-base sm:text-lg">{item.title}</h4>
-                  </div>
-                  <span className="text-xs font-mono font-bold tracking-wider px-3 py-1 rounded-full bg-surfaceLighter text-accent-cyan border border-surfaceLighter/50 self-start sm:self-auto">
-                    {item.status}
-                  </span>
-                </div>
-                
-                <div className="space-y-3 text-sm text-text-secondary">
-                  <p>
-                    <strong className="text-text-primary font-mono text-xs uppercase tracking-wider block mb-1">Objective:</strong>
-                    {item.objective}
-                  </p>
-                  <p className="leading-relaxed">
-                    <strong className="text-text-primary font-mono text-xs uppercase tracking-wider block mb-1">Work Completed:</strong>
-                    {item.workCompleted}
-                  </p>
-                </div>
-              </GlowCard>
-            ))}
+          <div className="overflow-x-auto rounded-xl border border-surfaceLighter bg-surface/30">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="border-b border-surfaceLighter bg-[#0B0F19]/50 font-mono text-xs text-text-muted uppercase tracking-wider">
+                  <th className="py-4 px-6 font-semibold">Title / Name</th>
+                  <th className="py-4 px-6 font-semibold">Status</th>
+                  <th className="py-4 px-6 font-semibold text-right">Link</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-surfaceLighter/40 text-sm text-text-secondary">
+                {researchProgress.map((item, idx) => (
+                  <tr key={idx} className="hover:bg-surfaceLighter/20 transition-colors duration-200">
+                    <td className="py-4 px-6 font-semibold text-text-primary">{item.title}</td>
+                    <td className="py-4 px-6">
+                      <span className="text-xs font-mono font-medium px-2.5 py-0.5 rounded bg-surfaceLighter text-accent-cyan border border-surfaceLighter/60">
+                        {item.status}
+                      </span>
+                    </td>
+                    <td className="py-4 px-6 text-right">
+                      {item.link ? (
+                        <a 
+                          href={item.link} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="inline-flex items-center space-x-1 text-accent-cyan hover:underline font-mono text-xs"
+                        >
+                          <span>Link</span>
+                          <ExternalLink size={12} />
+                        </a>
+                      ) : (
+                        <span className="text-text-muted font-mono text-xs">—</span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
 
-        {/* Section 4: Publications */}
+        {/* Section 3: Publications (APA Bibliographical Style) */}
         <div>
           <h3 className="text-xl font-heading font-bold text-text-primary mb-6 flex items-center space-x-2.5">
             <BookOpen size={20} className="text-accent-pink" />
             <span>Publications</span>
           </h3>
           
-          <div className="space-y-6">
-            {publications.map((pub, idx) => (
-              <GlowCard key={idx} className="p-6 border border-surfaceLighter" glowColor="rgba(0, 210, 255, 0.08)">
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                  <div className="space-y-1">
-                    <span className="text-[10px] font-mono text-accent-cyan border border-accent-cyan/20 bg-accent-cyan/5 px-2 py-0.5 rounded">
-                      {pub.venue.includes('arXiv') ? 'Preprint' : 'Conference Paper'}
-                    </span>
-                    <h4 className="text-lg font-heading font-bold text-text-primary pt-1.5">
-                      {pub.title}
-                    </h4>
-                    <p className="text-sm text-text-secondary">
-                      {pub.authors}
-                    </p>
-                    <p className="text-xs text-text-muted italic">
-                      {pub.venue} &bull; {pub.date}
-                    </p>
-                    {pub.mentor && (
-                      <p className="text-[11px] text-text-muted font-mono">
-                        Advisor/Mentor: {pub.mentor}
-                      </p>
-                    )}
+          <div className="space-y-8 font-sans">
+            {/* Year 2026 */}
+            <div className="space-y-4">
+              <h4 className="text-sm font-mono font-bold uppercase tracking-wider text-accent-cyan border-b border-surfaceLighter pb-1">
+                2026
+              </h4>
+              <GlowCard className="p-6 border border-surfaceLighter bg-surface/20" glowColor="rgba(0, 210, 255, 0.05)">
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                  <div className="text-sm text-text-secondary leading-relaxed">
+                    <span className="text-text-primary font-semibold">Kushwaha, S. S.</span>, &amp; Dehury, C. K. (2026). <span className="italic text-text-primary font-medium">LLM-assisted Agentic Edge Intelligence Framework</span>. arXiv preprint arXiv:2604.09607.
                   </div>
-
-                  {/* Actions Links */}
-                  <div className="flex space-x-3 self-start md:self-center">
-                    {pub.links.paper && (
-                      <a
-                        href={pub.links.paper}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center space-x-1 px-3 py-1.5 rounded bg-surfaceLighter hover:bg-accent-cyan/15 hover:text-accent-cyan border border-surfaceLighter text-xs font-mono transition-all duration-300"
-                      >
-                        <ExternalLink size={12} />
-                        <span>Paper</span>
-                      </a>
-                    )}
-                    {pub.links.code && (
-                      <a
-                        href={pub.links.code}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center space-x-1 px-3 py-1.5 rounded bg-surfaceLighter hover:bg-accent-cyan/15 hover:text-accent-cyan border border-surfaceLighter text-xs font-mono transition-all duration-300"
-                      >
-                        <Code size={12} />
-                        <span>Code</span>
-                      </a>
-                    )}
-                    {pub.links.slides && (
-                      <a
-                        href={pub.links.slides}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center space-x-1 px-3 py-1.5 rounded bg-surfaceLighter hover:bg-accent-cyan/15 hover:text-accent-cyan border border-surfaceLighter text-xs font-mono transition-all duration-300"
-                      >
-                        <BarChart size={12} />
-                        <span>Slides</span>
-                      </a>
-                    )}
-                  </div>
+                  <a
+                    href="https://arxiv.org/abs/2604.09607"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded bg-surfaceLighter hover:bg-accent-cyan/15 hover:text-accent-cyan border border-surfaceLighter text-xs font-mono transition-all duration-300 self-start shrink-0"
+                  >
+                    <ExternalLink size={12} />
+                    <span>arXiv:2604.09607</span>
+                  </a>
                 </div>
               </GlowCard>
-            ))}
+            </div>
+
+            {/* Year 2025 */}
+            <div className="space-y-4">
+              <h4 className="text-sm font-mono font-bold uppercase tracking-wider text-accent-pink border-b border-surfaceLighter pb-1">
+                2025
+              </h4>
+              <GlowCard className="p-6 border border-surfaceLighter bg-surface/20" glowColor="rgba(244, 63, 94, 0.05)">
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                  <div className="text-sm text-text-secondary leading-relaxed">
+                    <span className="text-text-primary font-semibold">Kushwaha, S. S.</span>, &amp; Indian, A. (2025). Resource-Optimized Task Allocation in Distributed Edge Networks. <span className="italic text-text-primary font-medium">Proceedings of the International Conference on Advanced Computing &amp; Intelligent Systems</span>.
+                  </div>
+                  <a
+                    href="https://github.com/SiddharthSinghKushwaha"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded bg-surfaceLighter hover:bg-accent-pink/15 hover:text-accent-pink border border-surfaceLighter text-xs font-mono transition-all duration-300 self-start shrink-0"
+                  >
+                    <ExternalLink size={12} />
+                    <span>Publisher Link</span>
+                  </a>
+                </div>
+              </GlowCard>
+            </div>
           </div>
 
           {/* Scholar Fallback Link */}
-          <div className="mt-8 text-center">
+          <div className="mt-10 text-center">
             <a
               href="https://scholar.google.com"
               target="_blank"

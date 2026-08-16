@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { GlowCard } from './GlowCard';
-import { Wrench, Box, HelpCircle, GitBranch } from 'lucide-react';
+import { Wrench, Box, HelpCircle, ExternalLink } from 'lucide-react';
 
 interface LabItem {
   title: string;
@@ -46,7 +46,7 @@ export const DCCLab: React.FC = () => {
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         
         {/* Section Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-10">
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -74,8 +74,25 @@ export const DCCLab: React.FC = () => {
           />
         </div>
 
+        {/* DCC Lab Website Link - Placed First */}
+        <div className="flex justify-center mb-16">
+          <motion.a 
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            href="https://dcc.chinmayadehury.in/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="inline-flex items-center space-x-2 px-5 py-2.5 rounded-lg border border-accent-pink/30 bg-accent-pink/5 hover:bg-accent-pink/10 text-accent-pink font-semibold transition-all duration-300 shadow-md text-sm font-mono"
+          >
+            <span>Visit DCC Lab Website</span>
+            <ExternalLink size={14} />
+          </motion.a>
+        </div>
+
         {/* Lab Columns Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           
           {/* Tools Column */}
           <div className="space-y-6">
@@ -147,46 +164,6 @@ export const DCCLab: React.FC = () => {
                 )}
               </GlowCard>
             ))}
-          </div>
-
-        </div>
-
-        {/* Group / Mentor & Git Panel */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center border-t border-surfaceLighter/50 pt-12">
-          
-          {/* Advisor info */}
-          <div className="md:col-span-8 space-y-4">
-            <h3 className="text-xl font-heading font-bold text-text-primary">
-              Advisor & Research Group
-            </h3>
-            <p className="text-sm text-text-secondary leading-relaxed">
-              Our research in the <strong>Distributed Computing Continuum Lab (DCC Lab)</strong>, led by <a href="https://dcc.chinmayadehury.in/" target="_blank" rel="noopener noreferrer" className="text-accent-cyan hover:underline font-semibold">Dr. Chinmaya Kumar Dehury</a>, covers computing continuum scheduling, localized edge AI workloads, and network routing mechanisms. We construct systems that bridge IoT sensors, edge servers, and cloud clusters.
-            </p>
-            <div className="inline-flex items-center space-x-3 text-xs font-mono text-text-muted">
-              <span>Group site:</span>
-              <a href="https://dcc.chinmayadehury.in/" target="_blank" rel="noopener noreferrer" className="text-accent-cyan hover:underline">
-                https://dcc.chinmayadehury.in/
-              </a>
-            </div>
-          </div>
-
-          {/* GitHub banner */}
-          <div className="md:col-span-4">
-            <GlowCard className="p-6 border border-surfaceLighter text-center" glowColor="rgba(0, 210, 255, 0.08)">
-              <GitBranch className="text-accent-cyan mx-auto mb-3" size={24} />
-              <h4 className="font-heading font-bold text-text-primary text-sm mb-2">Open Source</h4>
-              <p className="text-xs text-text-secondary mb-4">
-                Access my active repositories, code snippets, and research scripts directly on GitHub.
-              </p>
-              <a 
-                href="https://github.com/SiddharthSinghKushwaha" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="inline-block text-xs font-mono font-semibold text-background bg-accent-cyan px-4 py-2 rounded-lg hover:bg-accent-cyan/90 transition-all shadow-md"
-              >
-                git checkout
-              </a>
-            </GlowCard>
           </div>
 
         </div>

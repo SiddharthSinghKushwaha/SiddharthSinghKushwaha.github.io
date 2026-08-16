@@ -1,5 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
-import type { MouseEvent as ReactMouseEvent } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 
 interface StarParticle {
@@ -13,8 +12,7 @@ interface StarParticle {
 export const Hero: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [focalLength, setFocalLength] = useState<number>(300);
-  const [warpCenter, setWarpCenter] = useState<{ x: number; y: number } | null>(null);
+  const focalLength = 300;
 
   // Icons
   const scholarIcon = (
@@ -60,7 +58,7 @@ export const Hero: React.FC = () => {
 
     let animationFrameId: number;
     let stars: StarParticle[] = [];
-    const numStars = 450; // Performance friendly density
+    const numStars = 400;
 
     const resizeCanvas = () => {
       canvas.width = canvas.offsetWidth;
@@ -84,36 +82,18 @@ export const Hero: React.FC = () => {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // Target center coordinates for smoothing
-    let targetCenterX = canvas.width / 2;
-    let targetCenterY = canvas.height / 2;
-    let currentCenterX = canvas.width / 2;
-    let currentCenterY = canvas.height / 2;
-
     const animate = () => {
-      // Clear with deep transparent obsidian background to allow radial glows to pass through
       ctx.fillStyle = "rgba(11, 15, 25, 0.25)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      if (warpCenter) {
-        targetCenterX = warpCenter.x;
-        targetCenterY = warpCenter.y;
-      } else {
-        targetCenterX = canvas.width / 2;
-        targetCenterY = canvas.height / 2;
-      }
-
-      // Smooth center shifting
-      currentCenterX += (targetCenterX - currentCenterX) * 0.08;
-      currentCenterY += (targetCenterY - currentCenterY) * 0.08;
+      const currentCenterX = canvas.width / 2;
+      const currentCenterY = canvas.height / 2;
 
       for (let i = 0; i < numStars; i++) {
         const star = stars[i];
 
-        // Move stars closer to screen (medium speed)
         star.z -= 1.8;
 
-        // Reset if passed the screen boundary
         if (star.z <= 0) {
           star.z = canvas.width;
           star.x = Math.random() * canvas.width;
@@ -121,16 +101,12 @@ export const Hero: React.FC = () => {
           star.text = Math.random() > 0.5 ? "1" : "0";
         }
 
-        // Calculate 3D perspective projection
         const k = focalLength / star.z;
         const px = (star.x - currentCenterX) * k + currentCenterX;
         const py = (star.y - currentCenterY) * k + currentCenterY;
 
-        // Only draw if within viewport boundaries
         if (px >= 0 && px <= canvas.width && py >= 0 && py <= canvas.height) {
-          // Font size scales with distance
           const size = Math.max(3, Math.min(22, 2.2 * k));
-          // Alpha increases as it gets closer
           const alpha = Math.min(0.7, (1 - star.z / canvas.width));
 
           ctx.font = `bold ${size}px "JetBrains Mono", monospace`;
@@ -148,42 +124,19 @@ export const Hero: React.FC = () => {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', resizeCanvas);
     };
-  }, [focalLength, warpCenter]);
-
-  const handleMouseMove = (e: ReactMouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-
-    // e.x sets focalLength (capped safely between 150 and 600)
-    const rawFocal = Math.max(150, Math.min(600, mouseX));
-    setFocalLength(rawFocal);
-
-    // Shift center of starfield warp dynamically
-    setWarpCenter({ x: mouseX, y: mouseY });
-  };
-
-  const handleMouseLeave = () => {
-    setWarpCenter(null);
-    setFocalLength(300);
-  };
+  }, []);
 
   return (
     <section 
       id="home" 
       ref={containerRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
       className="relative min-h-screen flex items-center pt-28 pb-16 overflow-hidden bg-background"
     >
-      {/* 3D binary starfield canvas background */}
       <canvas 
         ref={canvasRef} 
         className="absolute top-0 left-0 w-full h-full pointer-events-none z-0"
       />
 
-      {/* Static gradient glow blobs behind elements */}
       <div className="glow-blob bg-accent-cyan/10 top-1/4 left-10 w-[350px] h-[350px]" />
       <div className="glow-blob bg-accent-violet/10 bottom-1/4 right-10 w-[400px] h-[400px]" />
 
@@ -215,7 +168,7 @@ export const Hero: React.FC = () => {
               Siddharth Singh Kushwaha
             </h1>
             <p className="text-accent-cyan font-mono text-sm mb-1 font-semibold">
-              Ph.D. Scholar & CS Researcher
+              Ph.D. Scholar
             </p>
             <p className="text-text-secondary text-xs sm:text-sm mb-4">
               Distributed Computing Continuum Lab (DCC Lab) | IISER Berhampur
@@ -260,7 +213,7 @@ export const Hero: React.FC = () => {
                 {orcidIcon}
               </a>
               <a
-                href="mailto:siddharthsinghkushwaha@gmail.com"
+                href="mailto:2510601@iiserbpr.ac.in"
                 className="p-2.5 rounded-lg bg-surface border border-surfaceLighter text-text-secondary hover:text-accent-cyan hover:border-accent-cyan/40 transition-all duration-300"
                 title="Email"
               >
@@ -288,21 +241,18 @@ export const Hero: React.FC = () => {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="space-y-4"
           >
-            <h2 className="text-2xl sm:text-3xl font-heading font-bold text-text-primary leading-tight">
-              Investigating the boundaries of localized computation.
-            </h2>
             <p className="text-base sm:text-lg text-text-secondary leading-relaxed font-sans">
               I am a doctoral researcher advised by <a href="https://dcc.chinmayadehury.in/" target="_blank" rel="noopener noreferrer" className="text-accent-cyan hover:underline font-semibold">Dr. Chinmaya Kumar Dehury</a> at IISER Berhampur. 
               My research statement focuses on designing resource-efficient schedulers, lightweight container systems, and localized intelligence algorithms to optimize performance across the distributed computing continuum.
             </p>
           </motion.div>
 
-          {/* Research Interests and Focus Grid */}
+          {/* Research Interests Grid */}
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
-            className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-surfaceLighter/40"
+            className="grid grid-cols-1 gap-4 pt-4 border-t border-surfaceLighter/40"
           >
             <div>
               <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-text-muted mb-2">Research Interests</h4>
@@ -320,13 +270,6 @@ export const Hero: React.FC = () => {
                   <span>Resource-constrained Scheduling</span>
                 </li>
               </ul>
-            </div>
-
-            <div>
-              <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-text-muted mb-2">Current Focus</h4>
-              <p className="text-sm text-text-secondary leading-relaxed">
-                Benchmarking containerized microservices and writing scheduling heuristics that reduce inference latency on IoT-class machines.
-              </p>
             </div>
           </motion.div>
 

@@ -302,9 +302,9 @@ export const Contact: React.FC = () => {
           <div className="flex flex-wrap justify-center gap-3.5">
             {/* Email Icon Link */}
             <a
-              href="mailto:siddharthsinghkushwaha@gmail.com"
+              href="mailto:2510601@iiserbpr.ac.in"
               className="p-3 rounded-xl bg-surface border border-surfaceLighter text-text-secondary hover:text-accent-cyan hover:border-accent-cyan/40 transition-all duration-300 flex items-center justify-center shadow-lg hover:shadow-accent-cyan/5"
-              title="siddharthsinghkushwaha@gmail.com"
+              title="2510601@iiserbpr.ac.in"
             >
               <Mail size={18} />
             </a>
